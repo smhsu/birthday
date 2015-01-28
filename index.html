@@ -6,33 +6,55 @@
 </head>
 <body>
     <h1 class="font center">JENNY'S BIRTHDAY WEBSITE!</h1>
+	<p class="font center" id="recordnote" style="margin-top: 0; margin-bottom: 30px;"></p>
     <div id="main">
-        <img alt="cake" src="cake.jpg" id="cake"/><img alt="flame" src="flame.png" id="flame2"/>
-        <img alt="flame" src="flame.png" id="flame1"/>&nbsp;
-        <img alt="flame" src="flame.png" id="flame3"/>
-        <img alt="flame" src="flame.png" id="flame4"/>
-        <img alt="flame" src="flame.png" id="flame5"/>
-        <img alt="flame" src="flame.png" id="flame6"/>
-        <img alt="flame" src="flame.png" id="flame7"/>
+        <img alt="cake" draggable="false" src="cake.jpg" id="cake"/><img alt="flame" draggable="false" src="flame.png" id="flame2"/>
+        <img alt="flame" draggable="false" src="flame.png" id="flame1"/>&nbsp;
+        <img alt="flame" draggable="false" src="flame.png" id="flame3"/>
+        <img alt="flame" draggable="false" src="flame.png" id="flame4"/>
+        <img alt="flame" draggable="false" src="flame.png" id="flame5"/>
+        <img alt="flame" draggable="false" src="flame.png" id="flame6"/>
+        <img alt="flame" draggable="false" src="flame.png" id="flame7"/>
     </div>
-    <p class="font center" style="margin-bottom: 40px;"><b>Happy birthday, Jenny!</b>  Click the flames to blow them out and make a wish!</p>
+    <p class="font center" style="margin-bottom: 30px;"><b>Happy birthday, Jenny!</b>  Click the flames to blow them out and make a wish!</p>
     <p class="font">Your friend,</p>
-    <p class="font">Silas<br /><small>(who can't draw, so he got the computer to do it for him.)</small></p>
-    <button class="font" id="reset">Rekindle!</button>
+    <p class="font" style="margin-bottom: 30px">Silas<br /><small>(who can't draw birthday cards, so he got the computer to do it for him.)</small></p>
+	
+    <span class="fix-width" id="timer">Current time: 0.00s</span>
+	<span class="fix-width" id="record">Your record: 99.99s</span>
+	<button id="reset">Rekindle!</button>
 
+	<script src="timer.js"></script>
     <script>
+		var lit = [true, true, true, true, true, true, true];
+	
         for (i = 1; i <= 7; i++) {
             (function(i) {
+				
                 document.getElementById("flame" + i).onclick = function () {
+					if (lit.every(function(el) {return el}))
+						startTimer();
+				
                     document.getElementById("flame" + i).setAttribute("src", "smoke.png");
+					lit[i-1] = false;
+					if ( !lit.some(function(el) {return el}) ) { // All put out
+						stopTimer();
+						updateRecord();
+					}
                 };
+				
             })(i);
         }
 
         document.getElementById("reset").onclick = function () {
             for (i = 1; i <= 7; i++) {
                 document.getElementById("flame" + i).setAttribute("src", "flame.png");
+				lit[i-1] = true;
             }
+			
+			stopTimer();
+			document.getElementById("recordnote").innerHTML = ("");
+			document.getElementById("timer").innerHTML=("Current time: 00.00s");
         }
     </script>
 </body>
